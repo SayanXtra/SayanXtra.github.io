@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snatchify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #f0f4f8; font-family: 'Inter', sans-serif; }
+        .main-card { transition: all 0.3s ease-in-out; }
+        .btn-primary { 
+            background-image: linear-gradient(to right, #3b82f6, #2563eb);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3); transform: translateY(-2px); }
+        .btn-primary:disabled { background-image: none; background-color: #9ca3af; cursor: not-allowed; }
+        .progress-bar-fill { transition: all 0.3s ease-out; }
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .fade-in-animation { animation: fade-in 0.5s ease-out forwards; }
+    </style>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto max-w-md p-4 min-h-screen flex flex-col items-center justify-center">
+        <main class="w-full bg-white rounded-2xl shadow-xl p-8 main-card">
+            <header class="text-center mb-6">
+                <h1 class="text-5xl font-bold text-blue-600 mb-1">Snatchify</h1>
+                <p class="text-gray-500">Made by @SayanXtra</p>
+            </header>
+            
+            <div class="flex bg-blue-50 border border-blue-200 rounded-full p-1 mb-6">
+                <button id="videoModeBtn" class="w-1/2 p-2 rounded-full bg-blue-600 text-white font-semibold transition-all shadow">Video</button>
+                <button id="audioModeBtn" class="w-1/2 p-2 rounded-full text-blue-600 font-semibold transition-all">Audio</button>
+            </div>
+
+            <div class="flex flex-col space-y-4">
+                <input type="text" id="linkInput" placeholder="Paste link and snatch it..." class="w-full p-4 text-lg bg-gray-50 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all">
+                <button id="downloadBtn" class="w-full text-white font-bold py-3 px-4 rounded-lg text-lg btn-primary" disabled>
+                    Snatch Media
+                </button>
+            </div>
+            
+            <div id="statusArea" class="text-center mt-6 h-12 flex flex-col items-center justify-center hidden">
+                <div class="w-full flex justify-between items-center mb-1">
+                    <span id="statusText" class="text-sm font-semibold text-gray-600"></span>
+                    <span id="speedText" class="text-sm font-semibold text-blue-600"></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="mt-8 text-center">
+            <div class="flex justify-center items-center space-x-6">
+                <a href="https://www.instagram.com/og.syan/" target="_blank" rel="noopener noreferrer" class="flex flex-col items-center text-gray-500 hover:text-blue-600 transition-colors">
+                    <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c-4.42 0-4.755.017-6.414.093A5.922 5.922 0 002.093 5.907C2.017 7.566 2 7.895 2 12.315s.017 4.75.093 6.414a5.922 5.922 0 003.807 3.807c1.66.076 1.994.093 6.414.093s4.755-.017 6.414-.093a5.922 5.922 0 003.807-3.807c.076-1.66.093-1.994.093-6.414s-.017-4.75-.093-6.414A5.922 5.922 0 0018.728 2.093C17.07 2.017 16.734 2 12.315 2zm0 1.802c4.355 0 4.66.016 6.304.09a4.116 4.116 0 012.65 2.65c.075 1.643.09 1.95.09 6.304s-.015 4.66-.09 6.304a4.116 4.116 0 01-2.65 2.65c-1.643.075-1.95.09-6.304.09s-4.66-.015-6.304-.09a4.116 4.116 0 01-2.65-2.65c-.075-1.643-.09-1.95-.09-6.304s.015-4.66.09-6.304a4.116 4.116 0 012.65-2.65c1.643-.075 1.95-.09 6.304-.09zM12 7.25a4.75 4.75 0 100 9.5 4.75 4.75 0 000-9.5zM12 15a3 3 0 110-6 3 3 0 010 6zm4.5-8.25a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z" clip-rule="evenodd" /></svg>
+                    <span class="text-xs mt-1">Follow Creator</span>
+                </a>
+                <a href="mailto:sayanxtra@outlook.com" class="flex flex-col items-center text-gray-500 hover:text-blue-600 transition-colors">
+                    <svg class="h-7 w-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" /><path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" /></svg>
+                    <span class="text-xs mt-1">Help & Support</span>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const videoModeBtn = document.getElementById('videoModeBtn');
+        const audioModeBtn = document.getElementById('audioModeBtn');
+        const linkInput = document.getElementById('linkInput');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const statusArea = document.getElementById('statusArea');
+        const statusText = document.getElementById('statusText');
+        const progressBar = document.getElementById('progressBar');
+        const speedText = document.getElementById('speedText');
+        
+        // This is the address of your live server on Render.
+        const backendUrl = 'https://snatchify-by-sayan.onrender.com';
+        let currentMode = 'video';
+
+        videoModeBtn.addEventListener('click', () => setMode('video'));
+        audioModeBtn.addEventListener('click', () => setMode('audio'));
+        linkInput.addEventListener('input', () => {
+            downloadBtn.disabled = !linkInput.value.trim().startsWith('http');
+        });
+        downloadBtn.addEventListener('click', startDownload);
+
+        function setMode(mode) {
+            currentMode = mode;
+            videoModeBtn.classList.toggle('bg-blue-600', mode === 'video');
+            videoModeBtn.classList.toggle('text-white', mode === 'video');
+            videoModeBtn.classList.toggle('shadow', mode === 'video');
+            audioModeBtn.classList.toggle('bg-blue-600', mode === 'audio');
+            audioModeBtn.classList.toggle('text-white', mode === 'audio');
+            audioModeBtn.classList.toggle('shadow', mode === 'audio');
+        }
+        
+        function setStatus(message, isError = false) {
+            statusArea.classList.remove('hidden');
+            statusArea.classList.add('fade-in-animation');
+            progressBar.style.width = isError ? '100%' : '50%';
+            progressBar.style.backgroundColor = isError ? '#ef4444' : '#3b82f6'; // Red for error, blue for normal
+            statusText.innerText = message;
+            speedText.innerText = ''; // Speed is not available in the web version
+        }
+
+        async function startDownload() {
+            const url = linkInput.value;
+            if (!url) return;
+            
+            downloadBtn.disabled = true;
+            linkInput.disabled = true;
+            setStatus('📡 Contacting server...');
+
+            // This is a special check for the "sleepy" server.
+            // If it's the first download, the server might need to wake up, which can take a minute.
+            const wakeUpMessage = setTimeout(() => {
+                setStatus("Server is waking up, please wait...");
+            }, 15000); // Show this message after 15 seconds
+
+            try {
+                const response = await fetch(backendUrl + '/api/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: url, mode: currentMode }),
+                });
+
+                clearTimeout(wakeUpMessage); // If we get a response, cancel the "waking up" message
+                const result = await response.json();
+
+                if (result.success) {
+                    progressBar.style.width = '100%';
+                    setStatus(`✅ Success! Your download will start now...`);
+                    
+                    // This creates a temporary, invisible link and clicks it to start the download.
+                    const link = document.createElement('a');
+                    link.href = backendUrl + result.download_url;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    setStatus('❌ ' + result.error, true);
+                }
+
+            } catch (error) {
+                clearTimeout(wakeUpMessage);
+                console.error('Network or unexpected error:', error);
+                setStatus('❌ Error connecting to server. Please try again.', true);
+            } finally {
+                downloadBtn.disabled = false;
+                linkInput.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
